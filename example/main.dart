@@ -28,7 +28,7 @@ void main() async {
 
   final circle = Circle(5.0)
     ..fill = ShapeFillType.solid
-    ..offset = Offset(10, 10);
+    ..offset = Offset(20, 20);
 
   final rect = Rectangle(10, 10)
     ..fill = ShapeFillType.outlined
@@ -67,7 +67,10 @@ void isolateMain(MarkupObj msg) {
   final ml = Prop.valueFromMarkup<List<List<Shape>>>(
     msg, emptyList: [],
   );
+  
   print(ml);
+  print(ml[0][0].offset.dx); // 20
+
   print(ml.runtimeType); // List<List<Shape>>
   print(ml[0].runtimeType); // List<Circle>
   print(ml[1].runtimeType); // List<Rectangle>
