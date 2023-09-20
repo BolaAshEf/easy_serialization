@@ -1,6 +1,4 @@
 import 'package:equatable/equatable.dart';
-
-import 'easy_serialization_base.dart';
 import 'utils.dart';
 
 final _typesIDsMap = <Type, TypeID>{};
@@ -11,12 +9,13 @@ final _typesIDsMap = <Type, TypeID>{};
 mixin class TypeHash<OBJ>{
   /// Any Type that is used with [TypeHash] should be stored in [_typesIDsMap].
   /// 
-  /// This is because we need to check for Types [hashcode]s collisions.
+  /// This is because we need to check for Types [hashcodes] collisions.
   TypeID ensureCalcTypeID(){
     final typeID = _typesIDsMap.putIfAbsent(OBJ, () => TypeID(TypeProvider<OBJ>()));
 
     while(_typesIDsMap.values.containsDuplicates()){
-      TypeID._idsLevel++;
+      // increment
+      TypeID.setIDsLevel();
     }
 
     return typeID;
@@ -64,6 +63,15 @@ class TypeID with SerializableMixin, EquatableMixin{
     }
 
     return typeIDS;
+  }
+
+  /// The Higher the [level] the lesser the chance of a collision occurs.
+  /// 
+  /// 1 or at most 2 is a good value.
+  static void setIDsLevel([int? level]){
+    level ??= _idsLevel + 1;
+    assert(level > -1);
+    _idsLevel = level;
   }
 }
 

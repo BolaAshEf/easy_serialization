@@ -1,3 +1,11 @@
+
+import '../src/easy_serialization_base.dart';
+
+typedef AnyObj = dynamic;
+
+/// Currently refer to json object.
+typedef MarkupObj = Map<String, AnyObj>;
+
 typedef TypeProviderCallback<RET> = RET Function<OBJ>();
 typedef TypeProviderType<RET> = RET Function(TypeProviderCallback<RET>);
 mixin class TypeProvider<OBJ>{
@@ -15,7 +23,7 @@ mixin class TypeProvider<OBJ>{
 
 bool isSubtype<T1, T2>() => <T1>[] is List<T2>;
 
-extension WithoutEmptiesListExt on List{
+extension ListUtilsExt on List{
   List _mapWhere((bool, dynamic) Function(dynamic) callback){
     List list = toList()..clear();
     for(final item in this){
@@ -46,5 +54,14 @@ extension WithoutEmptiesListExt on List{
     
     return (removeEmpties(rec)).$2;
   }
+
+  /// Cast the list (and its sub-lists) to the most-specific-registered-types.
+  /// 
+  /// **Note we call [withoutEmpties] first.**
+  List withSpecificTypes() => castDynamically(this).toList();
 }
 
+/// Basic mixin to provide [toMarkupObj] implementation.
+mixin SerializableMixin{
+  MarkupObj toMarkupObj();
+}

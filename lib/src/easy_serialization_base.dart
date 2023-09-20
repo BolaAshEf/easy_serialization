@@ -1,18 +1,12 @@
 import 'dart:isolate';
-import 'types_identification.dart';
-import 'utils.dart';
+import '../utils/types_identification.dart';
+import '../utils/utils.dart';
 
 part 'generic_handling.dart';
 part 'prop.dart';
 
 
 //*/////////////////////////// Type Definitions ///////////////////////////*//
-
-typedef AnyObj = dynamic;
-
-/// Currently refer to json object.
-typedef MarkupObj = Map<String, AnyObj>;
-
 
 typedef ToMarkupObjCallback<OBJ extends Object> = MarkupObj Function(OBJ obj);
 typedef FromMarkupObjCallback<OBJ extends Object> = OBJ Function(MarkupObj markupObj);
@@ -216,11 +210,6 @@ class EnumSerializationConfig<OBJ extends Enum> extends SerializationConfig<OBJ>
 /// We use it just to get unique id for [null].
 abstract class _NullObj{const _NullObj._();}
 final _nullConfigId = TypeHash<_NullObj>().typeID;
-
-/// Basic mixin to provide [toMarkupObj] implementation.
-mixin SerializableMixin{
-  MarkupObj toMarkupObj();
-}
 
 extension EnumSerializationConfigExt<E extends Enum> on List<E>{
   EnumSerializationConfig<E> get config => EnumSerializationConfig<E>(this);

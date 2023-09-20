@@ -171,3 +171,41 @@ class _ListTypeNode extends _TypeNode{
     .._config = _config
     ..haveNull = haveNull;
 }
+
+
+
+
+List? _castDynamically(Object? obj, [_ListTypeNode? recTypeData]) {
+  if(obj is List){
+    final listData = _ListTypeNode();
+    for (final element in obj) {
+      _castDynamically(element, listData);
+    }
+    recTypeData?.node = listData;
+
+
+    return listData._internalTypeProv.provType(<LIST_TYPE>(){
+      return obj.cast<LIST_TYPE>();
+    });
+  }
+
+  final listTypeData = recTypeData as _ListTypeNode;
+  if(obj == null){
+    listTypeData.haveNull = true;
+    return null;
+  }
+
+  if(obj is Enum){
+    final specificEnumConfig = SerializationConfig._getMostSpecificConfig(obj);
+    if(specificEnumConfig is EnumSerializationConfig){
+      listTypeData.config = specificEnumConfig;
+      return null;
+    }
+  }
+
+  final specificConfig = SerializationConfig._getMostSpecificConfig(obj);
+  listTypeData.config = specificConfig;
+  return null;
+}
+
+List castDynamically(List list) => _castDynamically(list.withoutEmpties())!;

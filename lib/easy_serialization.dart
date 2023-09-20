@@ -1,8 +1,5 @@
-/// Support for doing something awesome.
-///
-/// More dartdocs go here.
-library;
+library easy_serialization;
 
 export 'src/easy_serialization_base.dart';
-
-// TODO: Export any libraries intended for clients of this package.
+export 'utils/types_identification.dart';
+export 'utils/utils.dart';

@@ -68,7 +68,7 @@ void isolateMain(MarkupObj msg) {
     msg, emptyList: [],
   );
   
-  print(ml);
+  print(ml); // The exact list that is sent.
   print(ml[0][0].offset.dx); // 20
 
   print(ml.runtimeType); // List<List<Shape>>
