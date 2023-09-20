@@ -174,7 +174,8 @@ void isolateMain(MarkupObj msg) {
 
 * There are some utility functions that you can use.
 
-* 1- [TypeProvider<OBJ>] mixin class that enables you to store the generic type [OBJ] and use it dynamically at any time on some object.
+
+* 1- `TypeProvider<OBJ>` mixin class that enables you to store the generic type [OBJ] and use it dynamically at any time on some object.
 
 ```dart
 class MyList<E> with TypeProvider<E>{
@@ -190,7 +191,8 @@ void main(){
 }
 ```
 
-* 2- The [TypeHash<OBJ>] class of `utils/types_identification.dart` that ables you to get a unique ID(per compiled program) represinting each registered-type(some you must register all types).
+
+* 2- The `TypeHash<OBJ>` class of `utils/types_identification.dart` that ables you to get a unique ID(per compiled program) represinting each registered-type(some you must register all types).
 
 ```dart
 class Configration<E> with TypeHash<E>{
@@ -206,14 +208,17 @@ void main(){
 }
 ```
 
-* 3- [withoutEmpties] on [List] that removes any empty list inside the provided list. 
+
+* 3- `withoutEmpties` on [List] that removes any empty list inside the provided list. 
 
 ```dart
 final list = [1, "A", [],[5,[6],[]], [[[]]]];
 print(list.withoutEmpties()); // [1, A, [5, [6]]]
 ```
 
-* 4- [withSpecificTypes] on [List] that cast the list(and its sublists) to their most specific-registered-types(some you must register all types). 
+
+* 4- `withSpecificTypes` on [List] that cast the list(and its sublists) to their most specific-registered-types(some you must register all types). 
+
 ```dart
 final list1 = <dynamic>[[1,2], [1.1, 2.2]];
 print(list1.runtimeType); // List<dynamic>

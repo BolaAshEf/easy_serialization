@@ -1,4 +1,4 @@
-import 'dart:isolate';
+//import 'dart:isolate';
 import '../utils/types_identification.dart';
 import '../utils/utils.dart';
 
@@ -35,8 +35,8 @@ final _primitivesSerializableObjects = <SerializationConfig>[
   SerializationConfig<bool>._primitive(),
 
   // TODO : These types can be sent only between isolates.
-  SerializationConfig<SendPort>._primitive(), 
-  SerializationConfig<Capability>._primitive(),
+  // SerializationConfig<SendPort>._primitive(), 
+  // SerializationConfig<Capability>._primitive(),
 
   /// This does NOT mean that enum is sendable by default.
   /// 
