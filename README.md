@@ -2,12 +2,11 @@
 
 ## Description
 
-This package help you systematically work with serialization, it 
-offers great help especially with Serializing Lists and abstract types.
+This package helps you systematically work with serialization, it offers great help especially with serializing lists and abstract types.
 
 ## Usage
 
-* First you start by defining your types.
+* First, you start by defining your types.
 
 ```dart
 /// Representative of [Offset] type that comes with Flutter SDK.
@@ -28,7 +27,7 @@ abstract class Shape with SerializableMixin{
 
   double area();
 
-  /// If these objects are primitives then pass them directly,
+  /// If these objects are primitives, then pass them directly; 
   /// else use [Prop] to serialize them like this.
   @override
   MarkupObj toMarkupObj() => {
@@ -88,23 +87,23 @@ class Square extends Rectangle{
 }
 ```
 
-* Secondly you must register these types
+* Secondly, you must register these types.
  
 ```dart
 final customSerializableObjects = <SerializationConfig>[
-  /// How to configure a Type that is NOT yours(from different library),
-  /// or just types you do NOT want to use [SerializableMixin] with.
+  /// How to configure a type that is not yours (from a different library), 
+  /// or just types you do not want to use [SerializableMixin] with.
   SerializationConfig<Offset>(
     toMarkupObj: (obj) => {"dx": obj.dx, "dy": obj.dy,},
     fromMarkupObj: (markup) => Offset(markup["dx"], markup["dy"],),
   ),
 
-  /// How to configure Enum Type.
+  /// How to configure an enum type.
   ShapeFillType.values.config,
 
   /// How to configure your types.
   
-  /// [SerializationConfig.abstract] is used for createing a List of that abstract type. 
+  /// [SerializationConfig.abstract] is used for creating a list of that abstract type. 
   SerializationConfig.abstract<Shape>(),
   SerializationConfig.serializable<Circle>(Circle.fromMarkup),
 ];
@@ -132,12 +131,12 @@ void main() async {
   /// Notice here you MUST provide an empty list instance.
   /// 
   /// This markup can be sent to any isolate, 
-  /// or if you want json parse it using json.encode and json.decode.
+  /// or if you want JSON, parse it using json.encode and json.decode.
   final msg = Prop.valueToMarkup<List<List<Shape>>>(list, emptyList: []);
 
   Isolate.spawn(isolateMain, msg);
 
-  // jsut to show you the result of print in the second isolate.
+  // just to show you the result of print in the second isolate.
   await Future.delayed(const Duration(seconds: 2));
 }
 ```
@@ -173,9 +172,9 @@ void isolateMain(MarkupObj msg) {
 
 ## Utils
 
-* There is some Utility functions that you can use.
+* There are some utility functions that you can use.
 
-* 1- [TypeProvider<OBJ>] mixin class that ables you to store the generic type [OBJ] and use it dynamically at any time on some object.
+* 1- [TypeProvider<OBJ>] mixin class that enables you to store the generic type [OBJ] and use it dynamically at any time on some object.
 
 ```dart
 class MyList<E> with TypeProvider<E>{
@@ -191,7 +190,7 @@ void main(){
 }
 ```
 
-* 2- The [TypeHash<OBJ>] class of `utils/types_identification.dart` that ables you to get a unique ID(per compiled program) represinting each registered-class.
+* 2- The [TypeHash<OBJ>] class of `utils/types_identification.dart` that ables you to get a unique ID(per compiled program) represinting each registered-type(some you must register all types).
 
 ```dart
 class Configration<E> with TypeHash<E>{
@@ -214,7 +213,7 @@ final list = [1, "A", [],[5,[6],[]], [[[]]]];
 print(list.withoutEmpties()); // [1, A, [5, [6]]]
 ```
 
-* 4- [withSpecificTypes] on [List] that cast the list(and its sublists) to their most specific-registered-types. 
+* 4- [withSpecificTypes] on [List] that cast the list(and its sublists) to their most specific-registered-types(some you must register all types). 
 ```dart
 final list1 = <dynamic>[[1,2], [1.1, 2.2]];
 print(list1.runtimeType); // List<dynamic>
@@ -227,8 +226,6 @@ print(list2[1].runtimeType); // List<double>
 
 ## Additional information
 
-* For more detailed example you can see `/example/main.dart`.
+* For a more detailed example you can see `/example/main.dart`.
 
-* This package is the first step in a series of packages I will publish.
-The other packages will help you work asynchronously between isolates or even a distant server
-like executing some code inside other isolate or server and wait the result and get some information.
+* This package is the first step in a series of packages I will publish. The other packages will help you work asynchronously between isolates or even a distant server like executing some code inside another isolate or server and waiting for the result and getting some information.
