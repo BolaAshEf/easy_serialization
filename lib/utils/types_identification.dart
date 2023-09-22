@@ -4,16 +4,17 @@ import 'utils.dart';
 final _typesIDsMap = <Type, TypeID>{};
 
 /// Get an [typeID] for [OBJ] that represent this type only.
-/// 
+///
 /// [typeID] contains the type id, which is a **List<int>** that can be sent as json.
-mixin class TypeHash<OBJ>{
+mixin class TypeHash<OBJ> {
   /// Any Type that is used with [TypeHash] should be stored in [_typesIDsMap].
-  /// 
+  ///
   /// This is because we need to check for Types [hashcodes] collisions.
-  TypeID ensureCalcTypeID(){
-    final typeID = _typesIDsMap.putIfAbsent(OBJ, () => TypeID(TypeProvider<OBJ>()));
+  TypeID ensureCalcTypeID() {
+    final typeID =
+        _typesIDsMap.putIfAbsent(OBJ, () => TypeID(TypeProvider<OBJ>()));
 
-    while(_typesIDsMap.values.containsDuplicates()){
+    while (_typesIDsMap.values.containsDuplicates()) {
       // increment
       TypeID.setIDsLevel();
     }
@@ -25,14 +26,15 @@ mixin class TypeHash<OBJ>{
 }
 
 const _propHashCodesMarkupName = "\$hash#codes";
+
 /// We pass [TypeProvider] instead of generic type, to make the [runtimeType] is equal at all time
 /// for [EquatableMixin] to work properly and compare only the [hashCodes].
-class TypeID with SerializableMixin, EquatableMixin{
+class TypeID with SerializableMixin, EquatableMixin {
   final TypeProvider? _provider;
   final List<int>? _mainIDS;
-  
-  List<int> get hashCodes => _mainIDS
-      ?? _provider!.provType(<OBJ>() => _getTypeIDS<OBJ>());
+
+  List<int> get hashCodes =>
+      _mainIDS ?? _provider!.provType(<OBJ>() => _getTypeIDS<OBJ>());
 
   TypeID(TypeProvider this._provider) : _mainIDS = null;
 
@@ -41,22 +43,23 @@ class TypeID with SerializableMixin, EquatableMixin{
 
   @override
   MarkupObj toMarkupObj() => {
-    _propHashCodesMarkupName : hashCodes,
-  };
+        _propHashCodesMarkupName: hashCodes,
+      };
 
-  TypeID.fromMarkup(MarkupObj markup) : _mainIDS = List.from(markup[_propHashCodesMarkupName]), _provider = null;
-
+  TypeID.fromMarkup(MarkupObj markup)
+      : _mainIDS = List.from(markup[_propHashCodesMarkupName]),
+        _provider = null;
 
   static int _idsLevel = 0;
-  static List<int> _getTypeIDS<T>(){
+  static List<int> _getTypeIDS<T>() {
     assert(_idsLevel > -1);
 
     final typeIDS = <int>[];
 
     TypeProvider t = TypeProvider<T>();
     typeIDS.add((T).hashCode);
-    for(int i = 0; i < _idsLevel; i++){
-      t.provType(<CURRENT>(){
+    for (int i = 0; i < _idsLevel; i++) {
+      t.provType(<CURRENT>() {
         typeIDS.add((List<CURRENT>).hashCode);
         t = TypeProvider<List<CURRENT>>();
       });
@@ -66,21 +69,22 @@ class TypeID with SerializableMixin, EquatableMixin{
   }
 
   /// The Higher the [level] the lesser the chance of a collision occurs.
-  /// 
+  ///
   /// 1 or at most 2 is a good value.
-  static void setIDsLevel([int? level]){
+  static void setIDsLevel([int? level]) {
     level ??= _idsLevel + 1;
     assert(level > -1);
     _idsLevel = level;
   }
 }
 
-
-extension _DuplicatesChecker on Iterable{
-  bool containsDuplicates(){
+extension _DuplicatesChecker on Iterable {
+  bool containsDuplicates() {
     final set = <dynamic>{};
-    for(final e in this){
-      if(!set.add(e)){return true;}
+    for (final e in this) {
+      if (!set.add(e)) {
+        return true;
+      }
     }
     return false;
   }

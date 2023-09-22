@@ -1,6 +1,6 @@
 name: easy_serialization
 description: This plugin is used to make the srialization process more maintainable and systematic.
-version: 1.0.0
+version: 1.0.1
 repository: https://github.com/BolaAshEf/easy_serialization
 
 environment:
